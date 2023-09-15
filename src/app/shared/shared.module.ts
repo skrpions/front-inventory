@@ -13,8 +13,7 @@ const COMPONENTS: any[] = [
 const MODULES: any[] = [
   CommonModule,
   MaterialModule,
-  RouterModule,
-  ReactiveFormsModule
+  RouterModule
 ];
 
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
@@ -25,13 +25,10 @@ export class ListCategoriesComponent implements OnInit{
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(
-    private readonly categoryApplication: CategoryApplication,
-    //private toastr: ToastrService,
-    public dialog: MatDialog
-    ) {
+  private readonly categoryApplication = inject(CategoryApplication);
+  public dialog = inject(MatDialog)
 
-  }
+  constructor() {}
 
   ngOnInit(): void {
     this.getAll();
@@ -83,7 +80,7 @@ export class ListCategoriesComponent implements OnInit{
 
     const reference = this.dialog.open(FormCategoryComponent, {
       data: row,
-      width: '800px',
+      width: '450px',
       enterAnimationDuration,
       exitAnimationDuration,
     });

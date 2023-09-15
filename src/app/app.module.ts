@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CategoryApplication } from './routes/categories/application/category-application';
 import { CategoryInfrastructure } from './routes/categories/infrastructure/category-infrastructure';
 import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
 
 // Declaron constantes para los providers
 const application = [
@@ -26,7 +27,7 @@ const infrastructure = [
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    DashboardModule
+    DashboardModule,
   ],
   providers: [
     ...application,
