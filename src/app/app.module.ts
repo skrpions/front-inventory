@@ -5,6 +5,17 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DashboardModule } from './routes/dashboard/dashboard.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CategoryApplication } from './routes/categories/application/category-application';
+import { CategoryInfrastructure } from './routes/categories/infrastructure/category-infrastructure';
+import { HttpClientModule } from '@angular/common/http';
+
+// Declaron constantes para los providers
+const application = [
+  CategoryApplication,
+];
+const infrastructure = [
+  CategoryInfrastructure
+];
 
 @NgModule({
   declarations: [
@@ -14,9 +25,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    DashboardModule,
+    HttpClientModule,
+    DashboardModule
   ],
-  providers: [],
+  providers: [
+    ...application,
+    ...infrastructure,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
