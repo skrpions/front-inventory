@@ -4,10 +4,11 @@ import { CommonModule } from '@angular/common';
 import { MaterialModule } from './material.module';
 import { RouterModule } from '@angular/router';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ConfirmComponent } from './components/confirm/confirm.component';
 
 const COMPONENTS: any[] = [
-  SidenavComponent
+  SidenavComponent,
+  ConfirmComponent
 ];
 
 const MODULES: any[] = [

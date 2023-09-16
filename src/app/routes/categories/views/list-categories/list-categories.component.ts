@@ -8,7 +8,14 @@ import { FormCategoryComponent } from '../form-category/form-category.component'
 import { CategoryApplication } from '../../application/category-application';
 import { ToastrService } from 'ngx-toastr';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ConfirmComponent } from 'src/app/shared/components/confirm/confirm.component';
 
+export type Messages = {
+  confirm: string;
+  insert: string;
+  update: string;
+  delete: string;
+};
 @Component({
   selector: 'app-list-categories',
   templateUrl: './list-categories.component.html',
@@ -17,6 +24,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class ListCategoriesComponent implements OnInit {
   icon_header = 'code';
   title_header = 'titles.projects';
+  messages!: Messages;
 
   filterValue = '';
   totalRecords = 0;
@@ -148,7 +156,50 @@ export class ListCategoriesComponent implements OnInit {
     });
   }
 
-  delete(id: number, record = '') {
+  delete(enterAnimationDuration: string, exitAnimationDuration: string, row: any = null!) {
+
+    const reference = this.dialog.open(ConfirmComponent, {
+      data: row,
+      width: '350px',
+      enterAnimationDuration,
+      exitAnimationDuration
+    });
+
+    reference.afterClosed().subscribe(response => {
+
+      if (!response) return;
+
+      this.categoryApplication.delete(row.id).subscribe({
+        next: () => {
+
+          // Success
+          this._snackBar.open('✔ Ok, Deleted', '', {
+            verticalPosition: 'top',
+            horizontalPosition: 'center',
+            duration: this.durationInSeconds * 1000,
+            panelClass: ['green-snackbar']
+          });
+
+          // Actualiza la fuente de datos
+          this.getAll();
+        },
+      });
+
+    });
+
+    /* this.utilsSvc.confirm(confirmMessage).subscribe(response => {
+      if (response) {
+        this.application.delete(id).subscribe({
+          next: () => {
+            this.changePage(objectPaginationWithCurrentPage);
+            this.toast.success(this.translate.instant(this.messages.delete));
+          },
+        });
+      }
+    }); */
+  }
+
+  /* delete(id: number, record = '') {
 
     this.categoryApplication.delete(id).subscribe({
       next: () => {
@@ -165,5 +216,5 @@ export class ListCategoriesComponent implements OnInit {
         this.getAll();
       },
     });
-  }
+  } */
 }

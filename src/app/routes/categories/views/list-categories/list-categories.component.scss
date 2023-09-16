@@ -1,6 +1,9 @@
+/* mat-form-field {
+  width: 75%;
+} */
 .flex-container {
-  margin-top: 15px;
-  margin-bottom: 15px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -17,7 +20,7 @@ h2 {
 
 
 .black-card{
- background-color: #0a1214;
+ background-color: #091013;
  color: white;
  border-radius: 0;
 }
@@ -60,6 +63,10 @@ mat-divider {
   order: 2;
 }
 
+.end-button button {
+  margin-top: 10px;
+}
+
 .row-align-rigth {
   padding-right: 40px !important;
   text-align: end !important;
@@ -73,7 +80,6 @@ mat-divider {
 .hoverRow:hover {
   background: whitesmoke !important;
 }
-
 
 /* Structure */
 /* table {
