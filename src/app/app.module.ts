@@ -8,7 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CategoryApplication } from './routes/categories/application/category-application';
 import { CategoryInfrastructure } from './routes/categories/infrastructure/category-infrastructure';
 import { HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ToastrModule } from 'ngx-toastr';
 
 // Declaron constantes para los providers
 const application = [
@@ -28,6 +28,8 @@ const infrastructure = [
     BrowserAnimationsModule,
     HttpClientModule,
     DashboardModule,
+    ToastrModule.forRoot(),
+
   ],
   providers: [
     ...application,

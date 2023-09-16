@@ -1,6 +1,9 @@
-<mat-divider></mat-divider>
+<!-- <mat-divider></mat-divider> -->
 <mat-card class="black-card">
-    <h2 class="align">List Categories</h2>
+  <div class="flex-container">
+    <mat-icon>category</mat-icon>
+    <h2>Categories</h2>
+  </div>
 </mat-card>
 
 <mat-card>
@@ -92,7 +95,7 @@
             <td class="mat-cell black-color" colspan="4"> No data matching the filter: {{filterValue}}
         </table>
 
-        <mat-paginator [pageSizeOptions]="[5]" showFirstLastButtons></mat-paginator>
+        <mat-paginator [pageSizeOptions]="[4]" showFirstLastButtons></mat-paginator>
       </div>
 
     </mat-card-content>

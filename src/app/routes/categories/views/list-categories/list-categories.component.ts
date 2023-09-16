@@ -6,18 +6,21 @@ import { MatTableDataSource } from '@angular/material/table';
 import { CategoryEntity } from '../../domain/entities/category-entity';
 import { FormCategoryComponent } from '../form-category/form-category.component';
 import { CategoryApplication } from '../../application/category-application';
+import { ToastrService } from 'ngx-toastr';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-list-categories',
   templateUrl: './list-categories.component.html',
   styleUrls: ['./list-categories.component.scss']
 })
-export class ListCategoriesComponent implements OnInit{
+export class ListCategoriesComponent implements OnInit {
   icon_header = 'code';
   title_header = 'titles.projects';
 
   filterValue = '';
   totalRecords = 0;
+  durationInSeconds = 3;
 
   dataSource = new MatTableDataSource<any>();
   displayedColumns: string[] = ['id', 'name', 'description', 'actions'];
@@ -26,9 +29,9 @@ export class ListCategoriesComponent implements OnInit{
   @ViewChild(MatSort) sort!: MatSort;
 
   private readonly categoryApplication = inject(CategoryApplication);
-  public dialog = inject(MatDialog)
-
-  constructor() {}
+  public dialog = inject(MatDialog);
+  public toastr = inject(ToastrService);
+  private _snackBar = inject(MatSnackBar);
 
   ngOnInit(): void {
     this.getAll();
@@ -55,15 +58,11 @@ export class ListCategoriesComponent implements OnInit{
       console.log('data', data);
 
       this.dataSource = new MatTableDataSource<CategoryEntity>(data); // Asignar los datos al atributo 'data'
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
       this.totalRecords = data.length;
     }
 
-  }
-
-  ngAfterViewInit() {
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
-    //this.paginator.pageSize = 5; // Configura el tamaño de página que desees
   }
 
   applyFilter(event: Event) {
@@ -95,35 +94,55 @@ export class ListCategoriesComponent implements OnInit{
         // Update entity
         this.categoryApplication.update(id, response).subscribe({
           next: () => {
-            console.log('Actualizado:', response);
 
-            // Actualiza la fuente de datos con el nuevo registro
+            // Success
+            this._snackBar.open('✔ Ok, Updated', '', {
+              verticalPosition: 'top',
+              horizontalPosition: 'center',
+              duration: this.durationInSeconds * 1000,
+              panelClass: ['green-snackbar']
+            });
+
+            // Actualiza la fuente de datos
             this.getAll();
-            console.log('Actualizado');
 
-            //this.toastr.success('Updated', 'Ok!');
-            //this.dataSource.data = [...this.dataSource.data];
+          },error: (err) => {
+            // Manejo de errores
+            this._snackBar.open('❌ Error updating', '', {
+              verticalPosition: 'top',
+              horizontalPosition: 'center',
+              duration: this.durationInSeconds * 1000,
+              panelClass: ['red-snackbar']
+            });
+          }
 
-            //this.toast.success(this.translate.instant(this.messages.update));
-          },
         });
       } else {
-
-        // Agregaré un id manualmente para que no de error al insertar
-        response.id = this.dataSource.data.length + 1;
 
         // New entity
         this.categoryApplication.add(response).subscribe({
           next: () => {
 
-            // Actualiza la fuente de datos con el nuevo registro
-            this.getAll();
-            console.log('Agregado');
-            //this.toastr.success('Added', 'Ok!');
-            //this.dataSource.data = [...this.dataSource.data];
+            // Success
+            this._snackBar.open('✔ Ok, Added', '', {
+              verticalPosition: 'top',
+              horizontalPosition: 'center',
+              duration: this.durationInSeconds * 1000,
+              panelClass: ['green-snackbar']
+            });
 
-            //this.toast.success(this.translate.instant(this.messages.insert));
-          },
+            // Actualiza la fuente de datos
+            this.getAll();
+
+          },error: (err) => {
+            // Manejo de errores
+            this._snackBar.open('❌ Error updating', '', {
+              verticalPosition: 'top',
+              horizontalPosition: 'center',
+              duration: this.durationInSeconds * 1000,
+              panelClass: ['red-snackbar']
+            });
+          }
         });
       }
     });
@@ -134,13 +153,16 @@ export class ListCategoriesComponent implements OnInit{
     this.categoryApplication.delete(id).subscribe({
       next: () => {
 
-        // Actualiza la fuente de datos con el nuevo registro
-        this.getAll();
-        console.log('Eliminado');
+        // Success
+        this._snackBar.open('✔ Ok, Deleted', '', {
+          verticalPosition: 'top',
+          horizontalPosition: 'center',
+          duration: this.durationInSeconds * 1000,
+          panelClass: ['green-snackbar']
+        });
 
-        //this.dataSource.data = [...this.dataSource.data];
-        //this.toastr.success('Deleted', 'Ok!');
-        //this.toast.success(this.translate.instant(this.messages.delete));
+        // Actualiza la fuente de datos
+        this.getAll();
       },
     });
   }

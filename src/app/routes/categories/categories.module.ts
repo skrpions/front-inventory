@@ -9,6 +9,7 @@ import { MaterialModule } from 'src/app/shared/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
 
 
+
 @NgModule({
   declarations: [
     ListCategoriesComponent,
@@ -19,7 +20,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     CategoriesRoutingModule,
     SharedModule,
     MaterialModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+
   ]
 })
 export class CategoriesModule { }

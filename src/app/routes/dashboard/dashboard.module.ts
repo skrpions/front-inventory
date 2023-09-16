@@ -7,9 +7,6 @@ import { DashboardComponent } from './views/dashboard/dashboard.component';
 import { HomeComponent } from './components/home/home.component';
 import { CategoriesModule } from '../categories/categories.module';
 
-
-
-
 @NgModule({
   declarations: [
     DashboardComponent,
@@ -19,7 +16,7 @@ import { CategoriesModule } from '../categories/categories.module';
     CommonModule,
     DashboardRoutingModule,
     SharedModule,
-    CategoriesModule
+    CategoriesModule,
   ]
 })
 export class DashboardModule { }
