@@ -1,42 +1,35 @@
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
-import { CategoryEntity } from '../../domain/entities/category-entity';
-import { FormCategoryComponent } from '../form-category/form-category.component';
-import { CategoryApplication } from '../../application/category-application';
-import { ToastrService } from 'ngx-toastr';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ConfirmComponent } from 'src/app/shared/components/confirm/confirm.component';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { ToastrService } from 'ngx-toastr';
+import { ProductApplication } from '../../application/product-application';
+import { ProductEntity } from '../../domain/entities/product-entity';
+import { FormProductComponent } from '../form-product/form-product.component';
 
-export type Messages = {
-  confirm: string;
-  insert: string;
-  update: string;
-  delete: string;
-};
 @Component({
-  selector: 'app-list-categories',
-  templateUrl: './list-categories.component.html',
-  styleUrls: ['./list-categories.component.scss']
+  selector: 'app-list-products',
+  templateUrl: './list-products.component.html',
+  styleUrls: ['./list-products.component.scss']
 })
-export class ListCategoriesComponent implements OnInit {
+export class ListProductsComponent {
   icon_header = 'code';
   title_header = 'titles.projects';
-  messages!: Messages;
+  //messages!: Messages;
 
   filterValue = '';
   totalRecords = 0;
   durationInSeconds = 3;
 
   dataSource = new MatTableDataSource<any>();
-  displayedColumns: string[] = ['id', 'name', 'description', 'actions'];
+  displayedColumns: string[] = ['id', 'picture', 'name', 'price', 'account', 'category', 'actions'];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  private readonly categoryApplication = inject(CategoryApplication);
+  private readonly productApplication = inject(ProductApplication);
   public dialog = inject(MatDialog);
   public toastr = inject(ToastrService);
   private _snackBar = inject(MatSnackBar);
@@ -46,7 +39,7 @@ export class ListCategoriesComponent implements OnInit {
   }
 
   getAll() {
-    this.categoryApplication.list().subscribe({
+    this.productApplication.list().subscribe({
       next: (rawData: any) => {
         this.processResponse(rawData);
       },
@@ -54,18 +47,24 @@ export class ListCategoriesComponent implements OnInit {
   }
 
   processResponse(rawData: any) {
-    const data: CategoryEntity[] = [];
+    const data: ProductEntity[] = [];
+    console.log('RawData', rawData);
 
     if(rawData.metadata[0].code === "200") {
 
-      let listCategories = rawData.categoryResponse.category;
+      let listProducts = rawData.productResponse.product;
 
-      listCategories.forEach((category: CategoryEntity) => {
-        data.push(category);
+      listProducts.forEach((product: ProductEntity) => {
+
+        // Directly assign the imagebase 64 and category to each product.
+        product.picture = 'data:image/png;base64,' + product.picture;
+        product.category = product.category.name;
+
+        data.push(product);
       });
       console.log('data', data);
 
-      this.dataSource = new MatTableDataSource<CategoryEntity>(data); // Asignar los datos al atributo 'data'
+      this.dataSource = new MatTableDataSource<ProductEntity>(data);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
       this.totalRecords = data.length;
@@ -83,9 +82,9 @@ export class ListCategoriesComponent implements OnInit {
   }
 
   openForm(enterAnimationDuration: string, exitAnimationDuration: string, row: any = null!) {
-    console.log('row', row);
+    /* console.log('row', row);
 
-    const reference = this.dialog.open(FormCategoryComponent, {
+    const reference = this.dialog.open(FormProductComponent, {
       data: row,
       width: '450px',
       enterAnimationDuration,
@@ -100,7 +99,7 @@ export class ListCategoriesComponent implements OnInit {
 
       if (id) {
         // Update entity
-        this.categoryApplication.update(id, response).subscribe({
+        this.productApplication.update(id, response).subscribe({
           next: () => {
 
             // Success
@@ -128,7 +127,7 @@ export class ListCategoriesComponent implements OnInit {
       } else {
 
         // New entity
-        this.categoryApplication.add(response).subscribe({
+        this.productApplication.add(response).subscribe({
           next: () => {
 
             // Success
@@ -153,12 +152,12 @@ export class ListCategoriesComponent implements OnInit {
           }
         });
       }
-    });
+    }); */
   }
 
   delete(enterAnimationDuration: string, exitAnimationDuration: string, row: any = null!) {
 
-    const reference = this.dialog.open(ConfirmComponent, {
+   /*  const reference = this.dialog.open(ConfirmComponent, {
       data: row,
       width: '350px',
       enterAnimationDuration,
@@ -169,7 +168,7 @@ export class ListCategoriesComponent implements OnInit {
 
       if (!response) return;
 
-      this.categoryApplication.delete(row.id).subscribe({
+      this.productApplication.delete(row.id).subscribe({
         next: () => {
 
           // Success
@@ -185,36 +184,6 @@ export class ListCategoriesComponent implements OnInit {
         },
       });
 
-    });
-
-    /* this.utilsSvc.confirm(confirmMessage).subscribe(response => {
-      if (response) {
-        this.application.delete(id).subscribe({
-          next: () => {
-            this.changePage(objectPaginationWithCurrentPage);
-            this.toast.success(this.translate.instant(this.messages.delete));
-          },
-        });
-      }
     }); */
   }
-
-  /* delete(id: number, record = '') {
-
-    this.categoryApplication.delete(id).subscribe({
-      next: () => {
-
-        // Success
-        this._snackBar.open('✔ Ok, Deleted', '', {
-          verticalPosition: 'top',
-          horizontalPosition: 'center',
-          duration: this.durationInSeconds * 1000,
-          panelClass: ['green-snackbar']
-        });
-
-        // Actualiza la fuente de datos
-        this.getAll();
-      },
-    });
-  } */
 }

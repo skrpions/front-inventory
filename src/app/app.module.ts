@@ -9,13 +9,17 @@ import { CategoryApplication } from './routes/categories/application/category-ap
 import { CategoryInfrastructure } from './routes/categories/infrastructure/category-infrastructure';
 import { HttpClientModule } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
+import { ProductApplication } from './routes/products/application/product-application';
+import { ProductInfrastructure } from './routes/products/infrastructure/product-infrastructure';
 
 // Declaron constantes para los providers
 const application = [
   CategoryApplication,
+  ProductApplication
 ];
 const infrastructure = [
-  CategoryInfrastructure
+  CategoryInfrastructure,
+  ProductInfrastructure
 ];
 
 @NgModule({
