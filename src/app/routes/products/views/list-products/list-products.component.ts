@@ -82,7 +82,7 @@ export class ListProductsComponent {
   }
 
   openForm(enterAnimationDuration: string, exitAnimationDuration: string, row: any = null!) {
-    /* console.log('row', row);
+    console.log('row', row);
 
     const reference = this.dialog.open(FormProductComponent, {
       data: row,
@@ -99,7 +99,7 @@ export class ListProductsComponent {
 
       if (id) {
         // Update entity
-        this.productApplication.update(id, response).subscribe({
+        /* this.productApplication.update(id, response).subscribe({
           next: () => {
 
             // Success
@@ -123,7 +123,7 @@ export class ListProductsComponent {
             });
           }
 
-        });
+        }); */
       } else {
 
         // New entity
@@ -152,7 +152,7 @@ export class ListProductsComponent {
           }
         });
       }
-    }); */
+    });
   }
 
   delete(enterAnimationDuration: string, exitAnimationDuration: string, row: any = null!) {

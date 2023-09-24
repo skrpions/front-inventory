@@ -1,10 +1,10 @@
 interface Product {
   id: number
+  picture: any
   name: string
   price: number
   account: number
   category: any
-  picture: any
 }
 
 export type ProductEntity = Required<Product>;
