@@ -15,16 +15,17 @@
 <webcam *ngIf="isUsingWebCam"
         [trigger]="triggerAsObservable()"
         (imageCapture)="initImageCapture($event)"
-        [width]="240"
-        [height]="207"
+        [width]="218"
+        [height]="220"
         mirrorImage="never">
 </webcam>
 <!-- <div *ngIf="isLoadingCamera">Cargando cámara...</div> -->
-<div *ngIf="isUsingWebCam">
+<div *ngIf="isUsingWebCam" class="center-button-container">
   <button mat-icon-button color="primary" type="button" (click)="takePhoto()">
     <mat-icon>add_a_photo</mat-icon>
   </button>
 </div>
+
 
 <div>
   <mat-slide-toggle (change)="changeOriginPhoto()" [checked]="isUsingWebCam" color="primary">

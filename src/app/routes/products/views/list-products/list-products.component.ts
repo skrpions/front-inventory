@@ -47,6 +47,7 @@ export class ListProductsComponent {
   }
 
   processResponse(rawData: any) {
+
     const data: ProductEntity[] = [];
 
     if(rawData.metadata[0].code === "200") {
@@ -70,16 +71,17 @@ export class ListProductsComponent {
   }
 
   applyFilter(event: Event) {
+
     this.filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = this.filterValue.trim().toLowerCase();
 
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+
   }
 
   openForm(enterAnimationDuration: string, exitAnimationDuration: string, row: any = null!) {
-    console.log('row', row);
 
     const reference = this.dialog.open(FormProductComponent, {
       data: row,
@@ -105,6 +107,7 @@ export class ListProductsComponent {
         this.addProduct(formData);
       }
     });
+
   }
 
   private createFormDataFromResponse(response: any): FormData {
@@ -126,6 +129,7 @@ export class ListProductsComponent {
   }
 
   private updateProduct(id: any, formData: FormData) {
+
     this.productApplication.update(id, formData).subscribe({
       next: () => {
         this.utilSrv.handleSuccess('Updated');
@@ -135,9 +139,11 @@ export class ListProductsComponent {
         this.utilSrv.handleError('updating');
       }
     });
+
   }
 
   private addProduct(formData: FormData) {
+
     this.productApplication.add(formData).subscribe({
       next: () => {
         this.utilSrv.handleSuccess('Added');
@@ -147,6 +153,7 @@ export class ListProductsComponent {
         this.utilSrv.handleError('adding');
       }
     });
+
   }
 
 
@@ -172,5 +179,6 @@ export class ListProductsComponent {
       });
 
     });
+
   }
 }

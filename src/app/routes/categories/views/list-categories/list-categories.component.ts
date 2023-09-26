@@ -84,7 +84,6 @@ export class ListCategoriesComponent implements OnInit {
   }
 
   openForm(enterAnimationDuration: string, exitAnimationDuration: string, row: any = null!) {
-    console.log('row', row);
 
     const reference = this.dialog.open(FormCategoryComponent, {
       data: row,

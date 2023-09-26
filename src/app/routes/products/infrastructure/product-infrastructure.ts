@@ -10,18 +10,22 @@ export class ProductInfrastructure {
   constructor(private readonly http: HttpClient) {}
 
   list(): Observable<ProductEntity[]> {
-    return this.http.get<ProductEntity[]>(`${environment.apiPath}products`);
+    return this.http.get<ProductEntity[]>(`${environment.apiPath}/products`);
+  }
+
+  listByName(name: string): Observable<ProductEntity[]> {
+    return this.http.get<ProductEntity[]>(`${environment.apiPath}/products/filter/${name}`);
   }
 
   add(entity: Partial<ProductEntity>): Observable<ProductEntity> {
-    return this.http.post<ProductEntity>(`${environment.apiPath}products`, entity);
+    return this.http.post<ProductEntity>(`${environment.apiPath}/products`, entity);
   }
 
   update(id: string, entity: ProductEntity): Observable<ProductEntity> {
-    return this.http.put<ProductEntity>(`${environment.apiPath}products/${id}`, entity);
+    return this.http.put<ProductEntity>(`${environment.apiPath}/products/${id}`, entity);
   }
 
   delete(id: string): Observable<any> {
-    return this.http.delete<ProductEntity>(`${environment.apiPath}products/${id}`);
+    return this.http.delete<ProductEntity>(`${environment.apiPath}/products/${id}`);
   }
 }

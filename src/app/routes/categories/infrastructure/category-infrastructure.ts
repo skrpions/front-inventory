@@ -10,22 +10,22 @@ export class CategoryInfrastructure {
   constructor(private readonly http: HttpClient) {}
 
   list(): Observable<CategoryEntity[]> {
-    return this.http.get<CategoryEntity[]>(`${environment.apiPath}categories`);
+    return this.http.get<CategoryEntity[]>(`${environment.apiPath}/categories`);
   }
 
   listOne(id: string): Observable<CategoryEntity | undefined> {
-    return this.http.get<CategoryEntity>(`${environment.apiPath}categories/${id}`);
+    return this.http.get<CategoryEntity>(`${environment.apiPath}/categories/${id}`);
   }
 
   add(entity: Partial<CategoryEntity>): Observable<CategoryEntity> {
-    return this.http.post<CategoryEntity>(`${environment.apiPath}categories`, entity);
+    return this.http.post<CategoryEntity>(`${environment.apiPath}/categories`, entity);
   }
 
   update(id: string, entity: CategoryEntity): Observable<CategoryEntity> {
-    return this.http.put<CategoryEntity>(`${environment.apiPath}categories/${id}`, entity);
+    return this.http.put<CategoryEntity>(`${environment.apiPath}/categories/${id}`, entity);
   }
 
   delete(id: string): Observable<any> {
-    return this.http.delete<CategoryEntity>(`${environment.apiPath}categories/${id}`);
+    return this.http.delete<CategoryEntity>(`${environment.apiPath}/categories/${id}`);
   }
 }

@@ -13,6 +13,10 @@ export class ProductApplication {
     return this.productRepository.list();
   }
 
+  listByName(name: string) {
+    return this.productRepository.listByName(name);
+  }
+
   add(productEntity: any) {
     return this.productRepository.add(productEntity);
   }
