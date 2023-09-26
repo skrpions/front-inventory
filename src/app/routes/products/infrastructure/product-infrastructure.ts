@@ -16,4 +16,12 @@ export class ProductInfrastructure {
   add(entity: Partial<ProductEntity>): Observable<ProductEntity> {
     return this.http.post<ProductEntity>(`${environment.apiPath}products`, entity);
   }
+
+  update(id: string, entity: ProductEntity): Observable<ProductEntity> {
+    return this.http.put<ProductEntity>(`${environment.apiPath}products/${id}`, entity);
+  }
+
+  delete(id: string): Observable<any> {
+    return this.http.delete<ProductEntity>(`${environment.apiPath}products/${id}`);
+  }
 }

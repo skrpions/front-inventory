@@ -42,10 +42,15 @@ export class FormProductComponent {
     });
 
     // Se agrega un control "picture" solo si no hay datos en la variable "data".
-    // De lo contrari o, se agrega el control sin ninguna validación específica.
+    // De lo contrario, se agrega el control sin ninguna validación específica.
     if (this.data) {
       this.reactiveForm.addControl('picture', new FormControl());
       this.photoToShow = this.data.picture ? this.data.picture : '';
+
+      // Sobre-escribo la categoria con el id
+      this.reactiveForm.get('category')?.setValue(this.data.category.id);
+      this.reactiveForm.get('picture')?.setValue(this.data.picture);
+
     } else {
       this.reactiveForm.addControl('picture', new FormControl(null, Validators.required));
     }
@@ -53,7 +58,6 @@ export class FormProductComponent {
     this.reactiveForm.valueChanges.subscribe(() => {
       console.log(this.reactiveForm.value);
     });
-
 
   }
 

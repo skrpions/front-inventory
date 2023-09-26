@@ -63,6 +63,7 @@ export class PhotoComponent {
     reader.readAsDataURL(file);
   }
 
+
   loadPhotoFromUrlOrDataUrl(urlOrPath: string) {
     this.photo.nativeElement.style.backgroundImage = `url(${urlOrPath})`;
   }
@@ -101,8 +102,13 @@ export class PhotoComponent {
 
   ngAfterViewInit() {
     if (this.photoByDefault) {
-      const path = `${environment.apiPath}/photos/${this.photoByDefault}`;
-      this.loadPhotoFromUrlOrDataUrl(path);
+
+      // Si la foto por defecto está en base 64, la carga
+      this.loadPhotoFromUrlOrDataUrl(this.photoByDefault);
+
+      // Si la foto por defecto es una url, la carga directamente
+      /* const path = `${environment.apiPath}/photos/${this.photoByDefault}`;
+      this.loadPhotoFromUrlOrDataUrl(path); */
     }
   }
 }

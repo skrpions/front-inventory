@@ -8,6 +8,8 @@ import { ToastrService } from 'ngx-toastr';
 import { ProductApplication } from '../../application/product-application';
 import { ProductEntity } from '../../domain/entities/product-entity';
 import { FormProductComponent } from '../form-product/form-product.component';
+import { ConfirmComponent } from 'src/app/shared/components/confirm/confirm.component';
+import { UtilsService } from 'src/app/shared/services/utils.service';
 
 @Component({
   selector: 'app-list-products',
@@ -32,6 +34,7 @@ export class ListProductsComponent {
   private readonly productApplication = inject(ProductApplication);
   public dialog = inject(MatDialog);
   public toastr = inject(ToastrService);
+  private utilsSrv = inject(UtilsService);
   private _snackBar = inject(MatSnackBar);
 
   ngOnInit(): void {
@@ -48,7 +51,6 @@ export class ListProductsComponent {
 
   processResponse(rawData: any) {
     const data: ProductEntity[] = [];
-    console.log('RawData', rawData);
 
     if(rawData.metadata[0].code === "200") {
 
@@ -58,11 +60,9 @@ export class ListProductsComponent {
 
         // Directly assign the imagebase 64 and category to each product.
         product.picture = 'data:image/png;base64,' + product.picture;
-        product.category = product.category.name;
 
         data.push(product);
       });
-      console.log('data', data);
 
       this.dataSource = new MatTableDataSource<ProductEntity>(data);
       this.dataSource.sort = this.sort;
@@ -92,86 +92,90 @@ export class ListProductsComponent {
     });
 
     reference.afterClosed().subscribe(response => {
-
-      console.log('response received: ', response);
+      console.log('response received:', response);
 
       if (!response) return;
 
       const id = response.id;
       delete response.id;
 
-      const formData = new FormData();
-
-      formData.append('picture', response.picture, response.picture.name);
-      formData.append('name', response.name);
-      formData.append('price', response.price);
-      formData.append('account', response.account);
-      formData.append('categoryId', response.category);
-
+      const formData = this.createFormDataFromResponse(response);
 
       if (id) {
         // Update entity
-        /* this.productApplication.update(id, response).subscribe({
-          next: () => {
-
-            // Success
-            this._snackBar.open('✔ Ok, Updated', '', {
-              verticalPosition: 'top',
-              horizontalPosition: 'center',
-              duration: this.durationInSeconds * 1000,
-              panelClass: ['green-snackbar']
-            });
-
-            // Actualiza la fuente de datos
-            this.getAll();
-
-          },error: (err) => {
-            // Manejo de errores
-            this._snackBar.open('❌ Error updating', '', {
-              verticalPosition: 'top',
-              horizontalPosition: 'center',
-              duration: this.durationInSeconds * 1000,
-              panelClass: ['red-snackbar']
-            });
-          }
-
-        }); */
+        this.updateProduct(id, formData);
       } else {
-
-        // New entity
-        this.productApplication.add(formData).subscribe({
-          next: () => {
-
-            // Success
-            this._snackBar.open('✔ Ok, Added', '', {
-              verticalPosition: 'top',
-              horizontalPosition: 'center',
-              duration: this.durationInSeconds * 1000,
-              panelClass: ['green-snackbar']
-            });
-
-            // Actualiza la fuente de datos
-            this.getAll();
-
-          },error: (err) => {
-            // Manejo de errores
-            this._snackBar.open('❌ Error adding', '', {
-              verticalPosition: 'top',
-              horizontalPosition: 'center',
-              duration: this.durationInSeconds * 1000,
-              panelClass: ['red-snackbar']
-            });
-            console.log('Error: ', err);
-
-          }
-        });
+         // New entity
+        this.addProduct(formData);
       }
     });
   }
 
+  private createFormDataFromResponse(response: any): FormData {
+
+    const formData = new FormData();
+
+    formData.append('name', response.name);
+    formData.append('picture', response.picture);
+    formData.append('price', response.price);
+    formData.append('account', response.account);
+    formData.append('categoryId', response.category);
+
+    if (!(response.picture instanceof File)) {
+      const picture: any = this.utilsSrv.convertBase64ToFile(response.picture);
+      formData.append('picture', picture);
+    }
+
+    return formData;
+  }
+
+  private updateProduct(id: any, formData: FormData) {
+    this.productApplication.update(id, formData).subscribe({
+      next: () => {
+        this.handleSuccess('Updated');
+      },
+      error: () => {
+        this.handleError('updating');
+      },
+    });
+  }
+
+  private addProduct(formData: FormData) {
+    this.productApplication.add(formData).subscribe({
+      next: () => {
+        this.handleSuccess('Added');
+      },
+      error: () => {
+        this.handleError('adding');
+      },
+    });
+  }
+
+  private handleSuccess(action: string) {
+    this._snackBar.open(`✔ Ok, ${action}`, '', {
+      verticalPosition: 'top',
+      horizontalPosition: 'center',
+      duration: this.durationInSeconds * 1000,
+      panelClass: ['green-snackbar'],
+    });
+
+    this.getAll();
+  }
+
+  private handleError(action: string) {
+    this._snackBar.open(`❌ Error ${action}`, '', {
+      verticalPosition: 'top',
+      horizontalPosition: 'center',
+      duration: this.durationInSeconds * 1000,
+      panelClass: ['red-snackbar'],
+    });
+    console.log(`Error ${action}`);
+  }
+
+
   delete(enterAnimationDuration: string, exitAnimationDuration: string, row: any = null!) {
 
-   /*  const reference = this.dialog.open(ConfirmComponent, {
+    const reference = this.dialog.open(ConfirmComponent, {
       data: row,
       width: '350px',
       enterAnimationDuration,
@@ -198,6 +202,6 @@ export class ListProductsComponent {
         },
       });
 
-    }); */
+    });
   }
 }
