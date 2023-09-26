@@ -16,8 +16,8 @@ import { UtilsService } from 'src/app/shared/services/utils.service';
   styleUrls: ['./list-products.component.scss']
 })
 export class ListProductsComponent {
-  icon_header = 'code';
-  title_header = 'titles.projects';
+  icon_header = 'add_shopping_cart';
+  title_header = 'Products';
   //messages!: Messages;
 
   filterValue = '';

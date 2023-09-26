@@ -22,8 +22,8 @@ export type Messages = {
   styleUrls: ['./list-categories.component.scss']
 })
 export class ListCategoriesComponent implements OnInit {
-  icon_header = 'code';
-  title_header = 'titles.projects';
+  icon_header = 'category';
+  title_header = 'Categories';
   messages!: Messages;
 
   filterValue = '';
