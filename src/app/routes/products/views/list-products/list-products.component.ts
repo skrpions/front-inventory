@@ -83,7 +83,7 @@ export class ListProductsComponent {
 
     const reference = this.dialog.open(FormProductComponent, {
       data: row,
-      width: '800px',
+      width: '750px',
       enterAnimationDuration,
       exitAnimationDuration,
     });
