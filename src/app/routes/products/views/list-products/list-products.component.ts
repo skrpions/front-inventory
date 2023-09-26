@@ -1,7 +1,6 @@
 import { Component, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
@@ -23,7 +22,6 @@ export class ListProductsComponent {
 
   filterValue = '';
   totalRecords = 0;
-  durationInSeconds = 3;
 
   dataSource = new MatTableDataSource<any>();
   displayedColumns: string[] = ['id', 'picture', 'name', 'price', 'account', 'category', 'actions'];
@@ -34,8 +32,7 @@ export class ListProductsComponent {
   private readonly productApplication = inject(ProductApplication);
   public dialog = inject(MatDialog);
   public toastr = inject(ToastrService);
-  private utilsSrv = inject(UtilsService);
-  private _snackBar = inject(MatSnackBar);
+  private utilSrv = inject(UtilsService);
 
   ngOnInit(): void {
     this.getAll();
@@ -92,11 +89,10 @@ export class ListProductsComponent {
     });
 
     reference.afterClosed().subscribe(response => {
-      console.log('response received:', response);
 
       if (!response) return;
 
-      const id = response.id;
+      const id: number = response.id;
       delete response.id;
 
       const formData = this.createFormDataFromResponse(response);
@@ -122,7 +118,7 @@ export class ListProductsComponent {
     formData.append('categoryId', response.category);
 
     if (!(response.picture instanceof File)) {
-      const picture: any = this.utilsSrv.convertBase64ToFile(response.picture);
+      const picture: any = this.utilSrv.convertBase64ToFile(response.picture);
       formData.append('picture', picture);
     }
 
@@ -132,44 +128,25 @@ export class ListProductsComponent {
   private updateProduct(id: any, formData: FormData) {
     this.productApplication.update(id, formData).subscribe({
       next: () => {
-        this.handleSuccess('Updated');
+        this.utilSrv.handleSuccess('Updated');
+        this.getAll();
       },
       error: () => {
-        this.handleError('updating');
-      },
+        this.utilSrv.handleError('updating');
+      }
     });
   }
 
   private addProduct(formData: FormData) {
     this.productApplication.add(formData).subscribe({
       next: () => {
-        this.handleSuccess('Added');
+        this.utilSrv.handleSuccess('Added');
+        this.getAll();
       },
       error: () => {
-        this.handleError('adding');
-      },
+        this.utilSrv.handleError('adding');
+      }
     });
-  }
-
-  private handleSuccess(action: string) {
-    this._snackBar.open(`✔ Ok, ${action}`, '', {
-      verticalPosition: 'top',
-      horizontalPosition: 'center',
-      duration: this.durationInSeconds * 1000,
-      panelClass: ['green-snackbar'],
-    });
-
-    this.getAll();
-  }
-
-  private handleError(action: string) {
-    this._snackBar.open(`❌ Error ${action}`, '', {
-      verticalPosition: 'top',
-      horizontalPosition: 'center',
-      duration: this.durationInSeconds * 1000,
-      panelClass: ['red-snackbar'],
-    });
-    console.log(`Error ${action}`);
   }
 
 
@@ -189,15 +166,7 @@ export class ListProductsComponent {
       this.productApplication.delete(row.id).subscribe({
         next: () => {
 
-          // Success
-          this._snackBar.open('✔ Ok, Deleted', '', {
-            verticalPosition: 'top',
-            horizontalPosition: 'center',
-            duration: this.durationInSeconds * 1000,
-            panelClass: ['green-snackbar']
-          });
-
-          // Actualiza la fuente de datos
+          this.utilSrv.handleSuccess('Deleted');
           this.getAll();
         },
       });

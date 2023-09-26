@@ -7,8 +7,8 @@ import { CategoryEntity } from '../../domain/entities/category-entity';
 import { FormCategoryComponent } from '../form-category/form-category.component';
 import { CategoryApplication } from '../../application/category-application';
 import { ToastrService } from 'ngx-toastr';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmComponent } from 'src/app/shared/components/confirm/confirm.component';
+import { UtilsService } from 'src/app/shared/services/utils.service';
 
 export type Messages = {
   confirm: string;
@@ -28,7 +28,7 @@ export class ListCategoriesComponent implements OnInit {
 
   filterValue = '';
   totalRecords = 0;
-  durationInSeconds = 3;
+
 
   dataSource = new MatTableDataSource<any>();
   displayedColumns: string[] = ['id', 'name', 'description', 'actions'];
@@ -39,7 +39,8 @@ export class ListCategoriesComponent implements OnInit {
   private readonly categoryApplication = inject(CategoryApplication);
   public dialog = inject(MatDialog);
   public toastr = inject(ToastrService);
-  private _snackBar = inject(MatSnackBar);
+  private utilSrv = inject(UtilsService);
+
 
   ngOnInit(): void {
     this.getAll();
@@ -93,66 +94,43 @@ export class ListCategoriesComponent implements OnInit {
     });
 
     reference.afterClosed().subscribe(response => {
+
       if (!response) return;
 
-      const id = response.id;
+      const id: number = response.id;
       delete response.id;
 
       if (id) {
         // Update entity
-        this.categoryApplication.update(id, response).subscribe({
-          next: () => {
-
-            // Success
-            this._snackBar.open('✔ Ok, Updated', '', {
-              verticalPosition: 'top',
-              horizontalPosition: 'center',
-              duration: this.durationInSeconds * 1000,
-              panelClass: ['green-snackbar']
-            });
-
-            // Actualiza la fuente de datos
-            this.getAll();
-
-          },error: (err) => {
-            // Manejo de errores
-            this._snackBar.open('❌ Error updating', '', {
-              verticalPosition: 'top',
-              horizontalPosition: 'center',
-              duration: this.durationInSeconds * 1000,
-              panelClass: ['red-snackbar']
-            });
-          }
-
-        });
+        this.updateCategory(id, response);
       } else {
-
-        // New entity
-        this.categoryApplication.add(response).subscribe({
-          next: () => {
-
-            // Success
-            this._snackBar.open('✔ Ok, Added', '', {
-              verticalPosition: 'top',
-              horizontalPosition: 'center',
-              duration: this.durationInSeconds * 1000,
-              panelClass: ['green-snackbar']
-            });
-
-            // Actualiza la fuente de datos
-            this.getAll();
-
-          },error: (err) => {
-            // Manejo de errores
-            this._snackBar.open('❌ Error updating', '', {
-              verticalPosition: 'top',
-              horizontalPosition: 'center',
-              duration: this.durationInSeconds * 1000,
-              panelClass: ['red-snackbar']
-            });
-          }
-        });
+         // New entity
+        this.addCategory(response);
       }
+    });
+  }
+
+  private updateCategory(id: number, response: any) {
+    this.categoryApplication.update(id, response).subscribe({
+      next: () => {
+        this.utilSrv.handleSuccess('Updated');
+        this.getAll();
+      },
+      error: () => {
+        this.utilSrv.handleError('updating');
+      }
+    });
+  }
+
+  private addCategory(response: any) {
+    this.categoryApplication.add(response).subscribe({
+      next: () => {
+        this.utilSrv.handleSuccess('Added');
+        this.getAll();
+      },
+      error: () => {
+        this.utilSrv.handleError('adding');
+      },
     });
   }
 
@@ -172,49 +150,13 @@ export class ListCategoriesComponent implements OnInit {
       this.categoryApplication.delete(row.id).subscribe({
         next: () => {
 
-          // Success
-          this._snackBar.open('✔ Ok, Deleted', '', {
-            verticalPosition: 'top',
-            horizontalPosition: 'center',
-            duration: this.durationInSeconds * 1000,
-            panelClass: ['green-snackbar']
-          });
-
-          // Actualiza la fuente de datos
+          this.utilSrv.handleSuccess('Deleted');
           this.getAll();
         },
       });
 
     });
 
-    /* this.utilsSvc.confirm(confirmMessage).subscribe(response => {
-      if (response) {
-        this.application.delete(id).subscribe({
-          next: () => {
-            this.changePage(objectPaginationWithCurrentPage);
-            this.toast.success(this.translate.instant(this.messages.delete));
-          },
-        });
-      }
-    }); */
   }
 
-  /* delete(id: number, record = '') {
-
-    this.categoryApplication.delete(id).subscribe({
-      next: () => {
-
-        // Success
-        this._snackBar.open('✔ Ok, Deleted', '', {
-          verticalPosition: 'top',
-          horizontalPosition: 'center',
-          duration: this.durationInSeconds * 1000,
-          panelClass: ['green-snackbar']
-        });
-
-        // Actualiza la fuente de datos
-        this.getAll();
-      },
-    });
-  } */
 }

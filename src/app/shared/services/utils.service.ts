@@ -1,9 +1,14 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UtilsService {
+
+  private _snackBar = inject(MatSnackBar);
+
+  durationInSeconds = 3;
 
   convertBase64ToFile(base64Data: string): File | null {
     const base64String = base64Data.split(',')[1];
@@ -27,6 +32,26 @@ export class UtilsService {
       console.error('Error al crear el archivo:', error);
       return null;
     }
+  }
+
+  handleSuccess(action: string) {
+    this._snackBar.open(`✔ Ok, ${action}`, '', {
+      verticalPosition: 'top',
+      horizontalPosition: 'center',
+      duration: this.durationInSeconds * 1000,
+      panelClass: ['green-snackbar'],
+    });
+
+  }
+
+  handleError(action: string) {
+    this._snackBar.open(`❌ Error ${action}`, '', {
+      verticalPosition: 'top',
+      horizontalPosition: 'center',
+      duration: this.durationInSeconds * 1000,
+      panelClass: ['red-snackbar'],
+    });
+    console.log(`Error ${action}`);
   }
 
 }
