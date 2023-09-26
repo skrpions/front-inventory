@@ -86,16 +86,28 @@ export class ListProductsComponent {
 
     const reference = this.dialog.open(FormProductComponent, {
       data: row,
-      width: '450px',
+      width: '800px',
       enterAnimationDuration,
       exitAnimationDuration,
     });
 
     reference.afterClosed().subscribe(response => {
+
+      console.log('response received: ', response);
+
       if (!response) return;
 
       const id = response.id;
       delete response.id;
+
+      const formData = new FormData();
+
+      formData.append('picture', response.picture, response.picture.name);
+      formData.append('name', response.name);
+      formData.append('price', response.price);
+      formData.append('account', response.account);
+      formData.append('categoryId', response.category);
+
 
       if (id) {
         // Update entity
@@ -127,7 +139,7 @@ export class ListProductsComponent {
       } else {
 
         // New entity
-        this.productApplication.add(response).subscribe({
+        this.productApplication.add(formData).subscribe({
           next: () => {
 
             // Success
@@ -143,12 +155,14 @@ export class ListProductsComponent {
 
           },error: (err) => {
             // Manejo de errores
-            this._snackBar.open('❌ Error updating', '', {
+            this._snackBar.open('❌ Error adding', '', {
               verticalPosition: 'top',
               horizontalPosition: 'center',
               duration: this.durationInSeconds * 1000,
               panelClass: ['red-snackbar']
             });
+            console.log('Error: ', err);
+
           }
         });
       }

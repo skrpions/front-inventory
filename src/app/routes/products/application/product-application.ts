@@ -12,7 +12,7 @@ export class ProductApplication {
     return this.productRepository.list();
   }
 
-  add(productEntity: Partial<ProductEntity>) {
+  add(productEntity: any) {
     return this.productRepository.add(productEntity);
   }
 }

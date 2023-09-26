@@ -32,7 +32,7 @@ const infrastructure = [
     BrowserAnimationsModule,
     HttpClientModule,
     DashboardModule,
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot()
 
   ],
   providers: [

@@ -50,6 +50,11 @@ export class FormProductComponent {
       this.reactiveForm.addControl('picture', new FormControl(null, Validators.required));
     }
 
+    this.reactiveForm.valueChanges.subscribe(() => {
+      console.log(this.reactiveForm.value);
+    });
+
+
   }
 
   get nameField() {
