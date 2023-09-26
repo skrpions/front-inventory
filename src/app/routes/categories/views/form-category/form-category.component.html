@@ -14,31 +14,26 @@
 
     <div class="row">
 
-      <div class="col-md-12">
-
-          <!-- Name -->
-          <mat-form-field appearance="outline">
-            <mat-label>Name:</mat-label>
-            <input formControlName="name" type="text" matInput required>
-            <mat-error *ngIf="nameField?.hasError('required')">Name is required</mat-error>
-            <mat-error *ngIf="nameField?.hasError('minlength')">Insufficient Characters</mat-error>
-            <mat-error *ngIf="nameField?.hasError('maxlength')">Character Limit Reached</mat-error>
-          </mat-form-field>
-
-      </div>
-
-      <div class="col-md-12">
+        <!-- Name -->
+        <mat-form-field class="col-12" appearance="outline">
+          <mat-label>Name:</mat-label>
+          <input formControlName="name" type="text" matInput required>
+          <mat-error *ngIf="nameField?.hasError('required')">Name is required</mat-error>
+          <mat-error *ngIf="nameField?.hasError('minlength')">Insufficient Characters</mat-error>
+          <mat-error *ngIf="nameField?.hasError('maxlength')">Character Limit Reached</mat-error>
+        </mat-form-field>
 
         <!-- Description -->
-        <mat-form-field appearance="outline">
+        <mat-form-field class="col-12" appearance="outline">
           <mat-label>Description:</mat-label>
           <input formControlName="description" type="text" matInput required>
           <mat-error *ngIf="descriptionField?.hasError('required')">Description is required</mat-error>
           <mat-error *ngIf="descriptionField?.hasError('minlength')">Insufficient Characters</mat-error>
           <mat-error *ngIf="descriptionField?.hasError('maxlength')">Character Limit Reached</mat-error>
         </mat-form-field>
+
       </div>
-    </div>
+
 
       <div class="row" >
         <mat-dialog-actions >

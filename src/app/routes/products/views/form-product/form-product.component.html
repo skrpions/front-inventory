@@ -21,58 +21,61 @@
       </div>
 
 
-      <div class="col-md-4">
+      <div class="col-md-8">
 
-        <!-- Name -->
-        <mat-form-field appearance="outline">
-          <mat-label>Name:</mat-label>
-          <input formControlName="name" type="text" matInput required>
-          <mat-error *ngIf="nameField?.hasError('required')">Name is required</mat-error>
-          <mat-error *ngIf="nameField?.hasError('minlength')">Insufficient Characters</mat-error>
-          <mat-error *ngIf="nameField?.hasError('maxlength')">Character Limit Reached</mat-error>
-        </mat-form-field>
+        <div class="row">
+          <!-- Name -->
+          <mat-form-field class="col-12" appearance="outline">
+            <mat-label>Name:</mat-label>
+            <input formControlName="name" type="text" matInput required>
+            <mat-error *ngIf="nameField?.hasError('required')">Name is required</mat-error>
+            <mat-error *ngIf="nameField?.hasError('minlength')">Insufficient Characters</mat-error>
+            <mat-error *ngIf="nameField?.hasError('maxlength')">Character Limit Reached</mat-error>
+          </mat-form-field>
 
-         <!-- Price -->
-         <mat-form-field appearance="outline">
-          <mat-label>Price:</mat-label>
-          <input formControlName="price" type="number" matInput required>
-          <mat-error *ngIf="priceField?.hasError('required')">Price is required</mat-error>
-          <mat-error *ngIf="priceField?.hasError('minlength')">Insufficient Characters</mat-error>
-          <mat-error *ngIf="priceField?.hasError('maxlength')">Character Limit Reached</mat-error>
-        </mat-form-field>
+        </div>
 
-      </div>
+        <div class="row">
 
+          <!-- Price -->
+          <mat-form-field class="col-6" appearance="outline">
+            <mat-label>Price:</mat-label>
+            <input formControlName="price" type="number" matInput required>
+            <mat-error *ngIf="priceField?.hasError('required')">Price is required</mat-error>
+            <mat-error *ngIf="priceField?.hasError('minlength')">Insufficient Characters</mat-error>
+            <mat-error *ngIf="priceField?.hasError('maxlength')">Character Limit Reached</mat-error>
+          </mat-form-field>
 
-      <div class="col-md-4">
+          <!-- Account -->
+          <mat-form-field class="col-6" appearance="outline">
+            <mat-label>Account:</mat-label>
+            <input formControlName="account" type="number" matInput required>
+            <mat-error *ngIf="accountField?.hasError('required')">Account is required</mat-error>
+            <mat-error *ngIf="accountField?.hasError('minlength')">Insufficient Characters</mat-error>
+            <mat-error *ngIf="accountField?.hasError('maxlength')">Character Limit Reached</mat-error>
+          </mat-form-field>
+        </div>
 
-        <!-- Account -->
-        <mat-form-field appearance="outline">
-          <mat-label>Account:</mat-label>
-          <input formControlName="account" type="number" matInput required>
-          <mat-error *ngIf="accountField?.hasError('required')">Account is required</mat-error>
-          <mat-error *ngIf="accountField?.hasError('minlength')">Insufficient Characters</mat-error>
-          <mat-error *ngIf="accountField?.hasError('maxlength')">Character Limit Reached</mat-error>
-        </mat-form-field>
-
-        <!-- Category -->
-        <mat-form-field appearance="outline">
-          <mat-label>Category:</mat-label>
-          <mat-select formControlName="category" placeholder="" required>
-              <mat-option *ngFor="let category of listCategories" [value]="category.id">
-                {{category.name}}
-              </mat-option>
-          </mat-select>
-          <mat-error *ngIf="categoryField?.hasError('required')">Category is required</mat-error>
-          <mat-error *ngIf="categoryField?.hasError('minlength')">Insufficient Characters</mat-error>
-          <mat-error *ngIf="categoryField?.hasError('maxlength')">Character Limit Reached</mat-error>
-        </mat-form-field>
+        <div class="row">
+          <!-- Category -->
+          <mat-form-field class="col-12" appearance="outline">
+            <mat-label>Category:</mat-label>
+            <mat-select formControlName="category" placeholder="" required>
+                <mat-option *ngFor="let category of listCategories" [value]="category.id">
+                  {{category.name}}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="categoryField?.hasError('required')">Category is required</mat-error>
+            <mat-error *ngIf="categoryField?.hasError('minlength')">Insufficient Characters</mat-error>
+            <mat-error *ngIf="categoryField?.hasError('maxlength')">Character Limit Reached</mat-error>
+          </mat-form-field>
+        </div>
 
       </div>
 
   </div>
 
-<div class="row" >
+  <div class="row" >
       <mat-dialog-actions >
 
         <!-- Save -->
