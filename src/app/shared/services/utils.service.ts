@@ -1,5 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { KeycloakService } from 'keycloak-angular';
 
 @Injectable({
   providedIn: 'root'
@@ -7,8 +8,18 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class UtilsService {
 
   private _snackBar = inject(MatSnackBar);
+  private _keyCloakSrv = inject(KeycloakService);
 
   durationInSeconds = 3;
+
+  getRoles(){
+    return this._keyCloakSrv.getUserRoles();
+  }
+
+  isAdministrator(): boolean{
+    let roles = this._keyCloakSrv.getUserRoles().filter(role => role === 'administrator');
+    return roles.length > 0;
+  }
 
   convertBase64ToFile(base64Data: string): File | null {
     const base64String = base64Data.split(',')[1];

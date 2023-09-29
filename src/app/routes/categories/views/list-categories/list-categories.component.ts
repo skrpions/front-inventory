@@ -28,6 +28,7 @@ export class ListCategoriesComponent implements OnInit {
 
   filterValue = '';
   totalRecords = 0;
+  isAdministrator: boolean = false;
 
 
   dataSource = new MatTableDataSource<any>();
@@ -44,6 +45,7 @@ export class ListCategoriesComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAll();
+    this.isAdministrator = this.utilSrv.isAdministrator();
   }
 
   getAll() {

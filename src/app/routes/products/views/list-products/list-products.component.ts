@@ -22,6 +22,7 @@ export class ListProductsComponent {
 
   filterValue = '';
   totalRecords = 0;
+  isAdministrator: boolean = false;
 
   dataSource = new MatTableDataSource<any>();
   displayedColumns: string[] = ['id', 'picture', 'name', 'price', 'account', 'category', 'actions'];
@@ -36,6 +37,7 @@ export class ListProductsComponent {
 
   ngOnInit(): void {
     this.getAll();
+    this.isAdministrator = this.utilSrv.isAdministrator();
   }
 
   getAll() {
