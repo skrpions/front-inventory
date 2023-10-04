@@ -28,4 +28,9 @@ export class CategoryApplication {
   delete(id: number) {
     return this.categoryRepository.delete(id);
   }
+
+  exportTotExcel() {
+    return this.categoryRepository.exportToExcel();
+  }
+
 }

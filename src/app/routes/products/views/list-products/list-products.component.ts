@@ -158,7 +158,6 @@ export class ListProductsComponent {
 
   }
 
-
   delete(enterAnimationDuration: string, exitAnimationDuration: string, row: any = null!) {
 
     const reference = this.dialog.open(ConfirmComponent, {
@@ -182,5 +181,24 @@ export class ListProductsComponent {
 
     });
 
+  }
+
+  exportToExcel() {
+
+    this.productApplication.exportTotExcel().subscribe({
+
+      next: (rawData: any) => {
+        let file = new Blob([rawData], { type: 'application/vnd.ms-excel' });
+        let fileURL = URL.createObjectURL(file);
+        var anchor = document.createElement('a');
+        anchor.download = "products.xlsx";
+        anchor.href = fileURL;
+        anchor.click();
+
+        this.utilSrv.handleSuccess('Exported');
+      }, error: () => {
+        this.utilSrv.handleError('Exporting');
+      }
+    });
   }
 }

@@ -15,7 +15,7 @@ export class SidenavComponent implements OnInit {
   username = '';
   mobileQuery!: MediaQueryList; // Responsive media query
   menuNav = [
-    {name: "Home", route: "home", icon: "home"},
+    {name: "Home", route: "home", icon: "dashboard"},
     {name: "Categorías", route: "categories", icon: "category"},
     {name: "Productos", route: "products", icon: "add_shopping_cart"}
   ]

@@ -160,4 +160,23 @@ export class ListCategoriesComponent implements OnInit {
 
   }
 
+  exportToExcel() {
+
+    this.categoryApplication.exportTotExcel().subscribe({
+
+      next: (rawData: any) => {
+        let file = new Blob([rawData], { type: 'application/vnd.ms-excel' });
+        let fileURL = URL.createObjectURL(file);
+        var anchor = document.createElement('a');
+        anchor.download = "categories.xlsx";
+        anchor.href = fileURL;
+        anchor.click();
+
+        this.utilSrv.handleSuccess('Exported');
+      }, error: () => {
+        this.utilSrv.handleError('Exporting');
+      }
+    });
+  }
+
 }

@@ -7,6 +7,7 @@ import { DashboardComponent } from './views/dashboard/dashboard.component';
 import { HomeComponent } from './components/home/home.component';
 import { CategoriesModule } from '../categories/categories.module';
 import { ProductsModule } from '../products/products.module';
+import { MaterialModule } from 'src/app/shared/material.module';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { ProductsModule } from '../products/products.module';
     CommonModule,
     DashboardRoutingModule,
     SharedModule,
+    MaterialModule,
     CategoriesModule,
     ProductsModule
   ]

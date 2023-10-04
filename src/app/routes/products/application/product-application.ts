@@ -28,4 +28,8 @@ export class ProductApplication {
   delete(id: number) {
     return this.productRepository.delete(id);
   }
+
+  exportTotExcel() {
+    return this.productRepository.exportToExcel();
+  }
 }

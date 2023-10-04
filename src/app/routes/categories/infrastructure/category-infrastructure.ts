@@ -28,4 +28,11 @@ export class CategoryInfrastructure {
   delete(id: string): Observable<any> {
     return this.http.delete<CategoryEntity>(`${environment.apiPath}/categories/${id}`);
   }
+
+  // More
+  exportToExcel(): Observable<Blob> {
+    return this.http.get(`${environment.apiPath}/categories/export/excel`, {
+      responseType: 'blob'
+    });
+  }
 }

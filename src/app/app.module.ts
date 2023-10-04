@@ -12,6 +12,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { ProductApplication } from './routes/products/application/product-application';
 import { ProductInfrastructure } from './routes/products/infrastructure/product-infrastructure';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
+import { NgChartsModule } from 'ng2-charts';
 
 // Keycloak: Authentication & Authorization
 function initializeKeycloak(keycloak: KeycloakService) {
@@ -53,7 +54,8 @@ const infrastructure = [
     HttpClientModule,
     DashboardModule,
     ToastrModule.forRoot(),
-    KeycloakAngularModule
+    KeycloakAngularModule,
+    NgChartsModule
 
   ],
   providers: [

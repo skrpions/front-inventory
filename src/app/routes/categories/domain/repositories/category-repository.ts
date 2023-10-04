@@ -7,4 +7,5 @@ export interface CategoryRepository {
   add(categoryEntity: Partial<CategoryEntity>): Observable<CategoryEntity>;
   update(id: number, categoryEntity: Partial<CategoryEntity>): Observable<CategoryEntity>;
   delete(id: number): Observable<CategoryEntity>;
+  exportToExcel(): Observable<Blob>;
 }
